@@ -25,14 +25,16 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemKey
 import com.example.newsapp.domain.model.Article
 import com.example.newsapp.presentation.screens.components.ArticleItem
+import com.example.newsapp.presentation.viewmodel.FeedViewModel
 import com.example.newsapp.presentation.viewmodel.SearchViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchScreen(
     viewModel: SearchViewModel = hiltViewModel(),
+    feedViewModel: FeedViewModel = hiltViewModel(),
     onNavigateUp: () -> Unit,
-    onArticleClick: (Article) -> Unit
+    onNavigateToArticleDetails: (String) -> Unit
 ) {
     val searchQuery by viewModel.searchQuery.collectAsState()
     val lazyPagingItems = viewModel.searchResults.collectAsLazyPagingItems()
@@ -239,8 +241,9 @@ fun SearchScreen(
                                 if (article != null) {
                                     ArticleItem(
                                         article = article,
-                                        onArticleClick = onArticleClick
-                                    )
+                                        onArticleClick = { clickedArticle ->
+                                            feedViewModel.onArticleClick(clickedArticle, onNavigateToArticleDetails)
+                                        },                                    )
 
                                     if (index < lazyPagingItems.itemCount - 1) {
                                         HorizontalDivider(

@@ -1,4 +1,3 @@
-
 package com.example.newsapp.presentation.screens.feed
 
 import androidx.compose.foundation.background
@@ -49,6 +48,10 @@ fun NewsFeedScreen(
     val tabs = listOf("For you", "Bookmarks")
 
     val currentPagingItems = if (selectedTab == 0) newsFeedPagingItems else bookmarkedPagingItems
+
+    val onArticleClick: (Article) -> Unit = { article ->
+        feedViewModel.onArticleClick(article, onNavigateToArticleDetails)
+    }
 
     val onBookmarkClick: (Article) -> Unit = { article ->
         if (selectedTab == 0) {
@@ -168,11 +171,13 @@ fun NewsFeedScreen(
                         val emptyMessage = if (selectedTab == 1) "No bookmarked articles yet" else "No articles yet"
                         EmptyState(message = emptyMessage, onRefresh = { currentPagingItems.refresh() })
                     } else {
-                        NewsFeedList(
-                            lazyPagingItems = currentPagingItems,
-                            onArticleClick = { onNavigateToArticleDetails(it.id) },
-                            onBookmarkClick = onBookmarkClick
-                        )
+                        key(selectedTab) {
+                            NewsFeedList(
+                                lazyPagingItems = currentPagingItems,
+                                onArticleClick = onArticleClick,
+                                onBookmarkClick = onBookmarkClick
+                            )
+                        }
                     }
                 }
             }
@@ -200,7 +205,6 @@ private fun NewsFeedList(
                 ArticleItem(
                     article = article,
                     onArticleClick = onArticleClick,
-
                 )
 
                 if (index < lazyPagingItems.itemCount - 1) {
@@ -237,7 +241,7 @@ private fun LoadingState(modifier: Modifier = Modifier) {
         modifier = modifier.fillMaxSize(),
         contentPadding = PaddingValues(vertical = 16.dp)
     ) {
-        items(10) { // Show 10 shimmer items
+        items(10) {
             ArticleItemShimmer()
             if (it < 9) {
                 HorizontalDivider(

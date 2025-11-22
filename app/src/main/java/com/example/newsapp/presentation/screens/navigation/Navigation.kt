@@ -32,10 +32,10 @@ fun NavGraphBuilder.setupNewsNavigation(navController: NavController) {
     composable(Screen.NewsFeed.route) {
 
         NewsFeedScreen(
-            onNavigateToArticleDetails = { articleId -> // The ID is passed here
+            onNavigateToArticleDetails = { articleId ->
                 navController.navigate(Screen.ArticleDetails.createRoute(articleId))
             },
-            onNavigateToSearch = { navController.navigate(Screen.Search.route) }, // <-- Pass navigation
+            onNavigateToSearch = { navController.navigate(Screen.Search.route) },
         )
     }
 
@@ -44,8 +44,8 @@ fun NavGraphBuilder.setupNewsNavigation(navController: NavController) {
         SearchScreen(
             viewModel = searchViewModel,
             onNavigateUp = { navController.navigateUp() },
-            onArticleClick = { article ->
-                navController.navigate(Screen.ArticleDetails.createRoute(article.id))
+            onNavigateToArticleDetails = { articleId -> // The parameter is now a String
+                navController.navigate(Screen.ArticleDetails.createRoute(articleId))
             }
         )
     }
