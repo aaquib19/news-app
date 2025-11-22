@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">News App</string>
+    <string name="bookmark_article">Bookmark Article</string>
+    <string name="unbookmark_article">Unbookmark Article</string>
+</resources>
