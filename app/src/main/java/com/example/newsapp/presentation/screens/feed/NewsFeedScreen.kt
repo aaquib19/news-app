@@ -300,12 +300,6 @@ private fun EmptyState(message: String, onRefresh: () -> Unit, modifier: Modifie
                 fontWeight = FontWeight.Medium,
                 color = MaterialTheme.colorScheme.onSurface
             )
-            Text(
-                text = "Pull down to refresh",
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
-            TextButton(onClick = onRefresh) { Text("Refresh") }
         }
     }
 }
